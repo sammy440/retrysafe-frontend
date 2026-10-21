@@ -1,0 +1,114 @@
+[
+  {
+    "id": "unguarded-side-effect",
+    "severity": "error",
+    "summary": "A non-idempotent effect (payment, email, plain insert, increment) runs with no dedupe guard on its path.",
+    "why": "Webhook providers and queues deliver at least once. A timeout, deploy, or manual resend runs the handler again with the same event, and every unguarded effect happens again.",
+    "safePattern": "Claim the event atomically before the effect (unique insert in the same transaction as DB writes, or Redis SET NX), or pass the provider's idempotency key derived from the event id."
+  },
+  {
+    "id": "record-before-effect-no-tx",
+    "severity": "error",
+    "summary": "The event is marked processed before its work runs, outside one transaction and with no rollback.",
+    "why": "If the process dies after the claim, the event stays marked as processed with its work undone. The retry is skipped as a duplicate and the event is lost.",
+    "safePattern": "Insert the processed-event row in the same transaction as the writes. For external effects, release the claim on failure, use a short lease TTL, or use an outbox."
+  },
+  {
+    "id": "check-then-insert-race",
+    "severity": "error",
+    "summary": "A lookup-then-insert dedupe check with no atomic claim before the effect; concurrent duplicates both pass it.",
+    "why": "Providers can deliver the same event twice at nearly the same instant (retries racing a slow first attempt, multiple workers). Both copies read 'not processed' before either writes the record.",
+    "safePattern": "Replace the lookup with an atomic claim: insert the event id into a table with a unique constraint (or Redis SET NX) and proceed only if the claim succeeded."
+  },
+  {
+    "id": "effect-before-record",
+    "severity": "warning",
+    "summary": "An effect runs before the event is recorded, behind a check that is not an atomic claim.",
+    "why": "If the process dies between the effect and the record, the retry finds no record, passes the check, and repeats the effect.",
+    "safePattern": "Record and write in one transaction for DB effects; for external calls use an idempotency key or an outbox written in the same transaction as the record."
+  },
+  {
+    "id": "nondeterministic-key",
+    "severity": "error",
+    "summary": "A dedupe or idempotency key is derived from Date.now(), Math.random(), uuid(), or similar.",
+    "why": "The key is different on every delivery, so neither the guard nor the provider recognizes the retry as a duplicate.",
+    "safePattern": "Build keys only from values that are identical on every delivery: the provider's event id, the job id, or a business id from the payload."
+  },
+  {
+    "id": "effect-missing-idempotency-key",
+    "severity": "warning",
+    "summary": "A call whose SDK supports an idempotency key is made without one.",
+    "why": "Guards can still let a repeat through (record rolled back with the transaction, lease expired, non-atomic check). Without a key the provider performs the effect again.",
+    "safePattern": "Pass the SDK's idempotency key option, derived from the event or job id."
+  },
+  {
+    "id": "swallowed-error-returns-2xx",
+    "severity": "error",
+    "summary": "A catch block swallows a failure of the handler's work and still acknowledges the event (2xx, or a completed job).",
+    "why": "Retries are the provider's recovery mechanism. Answering 2xx after the work failed tells it the event was handled, so the event is never delivered again.",
+    "safePattern": "Rethrow (or answer 5xx) when the work fails so the provider retries; only answer 2xx for duplicates or permanent payload errors you have recorded."
+  },
+  {
+    "id": "permanent-error-returns-5xx",
+    "severity": "warning",
+    "summary": "A permanent failure (invalid signature, malformed payload) is answered with 5xx, causing pointless retries.",
+    "why": "Providers retry 5xx responses for hours or days. A request that failed validation will fail the same way every time, wasting retries and possibly getting the endpoint disabled.",
+    "safePattern": "Answer 400 for malformed payloads and 400/401 for bad signatures; reserve 5xx for transient failures worth retrying."
+  },
+  {
+    "id": "ack-timing",
+    "severity": "warning",
+    "summary": "The response is sent before the work completes (or the work is not awaited), or slow work delays the response past the provider's timeout.",
+    "why": "Once the provider has a 2xx it will not retry, so failures after the acknowledgement lose the event; on serverless the function may be frozen mid-work. Conversely, a slow response makes the provider time out and retry while the first attempt is still running.",
+    "safePattern": "Either do the work and then respond, or persist the event (or enqueue a job) and respond immediately, doing the work in a worker that has its own retries."
+  },
+  {
+    "id": "wrong-event-field-as-key",
+    "severity": "warning",
+    "summary": "A dedupe key is derived from the object id inside the event (e.g. event.data.object.id) rather than the event id.",
+    "why": "Many events concern the same object (invoice.created, invoice.paid, invoice.voided). Keyed by the object id, the first one marks the object as processed and every later, distinct event is dropped as a duplicate.",
+    "safePattern": "Key processed-event records on the provider's event id (or delivery id header), or include the event type with the object id."
+  },
+  {
+    "id": "incrementing-write-unguarded",
+    "severity": "error",
+    "summary": "A relative write (increment, x = x + n, $inc, push) runs with no dedupe guard.",
+    "why": "Unlike setting a value, applying a delta is not idempotent: every redelivery adds it again, silently corrupting balances and counters.",
+    "safePattern": "Claim the event in the same transaction as the write, or store the event's contribution keyed by event id and derive the total from it."
+  },
+  {
+    "id": "non-atomic-multi-write",
+    "severity": "warning",
+    "summary": "Several database writes on one path run outside a transaction, and at least one is not idempotent.",
+    "why": "If the handler fails between the writes, the first is committed and the rest are not. The retry then runs the first write again (duplicating it) or trips over its result.",
+    "safePattern": "Wrap the writes (and the processed-event claim) in one transaction."
+  },
+  {
+    "id": "retry-loop-with-effect",
+    "severity": "warning",
+    "summary": "An in-code retry (loop, p-retry, async-retry) wraps a non-idempotent call that has no stable idempotency key.",
+    "why": "A timeout does not mean the call failed: the remote side may have done the work. Retrying it without a key repeats the effect.",
+    "safePattern": "Pass an idempotency key that stays the same across attempts, or only retry calls that are idempotent."
+  },
+  {
+    "id": "queue-add-without-job-id",
+    "severity": "info",
+    "summary": "A job or message is enqueued without the queue's deduplication id (jobId, MessageDeduplicationId, event id).",
+    "why": "When the handler is redelivered it enqueues the work again, and the downstream job runs twice.",
+    "safePattern": "Set the queue's deduplication id from the event id so a redelivery enqueues nothing new."
+  },
+  {
+    "id": "dedupe-ttl-short",
+    "severity": "warning",
+    "summary": "A dedupe key expires sooner than the provider's retry window.",
+    "why": "A retry that arrives after the key has expired is treated as a new event and processed again.",
+    "safePattern": "Keep dedupe keys at least as long as the provider retries (configure providers.<name>.retryWindowHours), or store them durably."
+  },
+  {
+    "id": "order-dependence-assumed",
+    "severity": "info",
+    "summary": "The handler sets state from several event types without checking a version or timestamp.",
+    "why": "Webhooks are not delivered in order. A delayed 'subscription.updated' can arrive after 'subscription.deleted' and resurrect the subscription.",
+    "safePattern": "Store the event's timestamp or version with the state and ignore events older than what is stored, or fetch the current object from the provider before writing."
+  }
+]
