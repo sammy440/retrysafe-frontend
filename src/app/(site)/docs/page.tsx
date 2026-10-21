@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { InstallTabs, NPM_URL } from "@/components/install-command";
 
 export const metadata: Metadata = { title: "Docs", description: "Install retrysafe, run it in CI, fix findings, and use the @retrysafe/guard runtime library." };
 
@@ -12,7 +13,7 @@ export default function DocsPage() {
     <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
       <h1 className="text-3xl font-semibold tracking-tight">Docs</h1>
       <p className="mt-3 text-muted">
-        retrysafe is a CLI. It needs no install and no account, and it never sends your code anywhere: the{" "}
+        retrysafe is a CLI on npm. Run it with npx, or add it to your project; it needs no account, and and it never sends your code anywhere: the{" "}
         <Link href="/playground" className="text-accent underline underline-offset-2">
           playground
         </Link>{" "}
@@ -24,7 +25,18 @@ export default function DocsPage() {
         <p className="mt-1 text-sm text-muted">Choosing a key, claiming in a transaction, leases for external calls, status codes, ack timing.</p>
       </Link>
 
-      <h2 className="mt-12 text-xl font-semibold">Run it</h2>
+      <h2 className="mt-12 text-xl font-semibold">Install</h2>
+      <p className="mt-2 text-muted">
+        Node 20 or newer. <code className="font-mono text-sm">npx</code> runs the latest version without installing; add it as a dev dependency to pin a version for CI.{" "}
+        <a href={NPM_URL} className="text-accent underline underline-offset-2">
+          retrysafe on npm
+        </a>
+      </p>
+      <InstallTabs />
+      <Code>{`// package.json
+"scripts": { "retrysafe": "retrysafe --ci" }`}</Code>
+
+      <h2 className="mt-10 text-xl font-semibold">Run it</h2>
       <Code>{`npx retrysafe                      # analyze the current project
 npx retrysafe --handlers           # list discovered webhook and queue handlers
 npx retrysafe --effect-map         # effect map for every handler
@@ -41,7 +53,7 @@ npx retrysafe rules                # list rules`}</Code>
         token, and clicking a finding opens it in VS Code, Cursor, or Windsurf.
       </p>
       <Code>{`npx retrysafe live --open
-npx retrysafe live --port 5000 --site https://your-retrysafe-site.example`}</Code>
+npx retrysafe live --port 5000                # use another local port`}</Code>
 
       <h2 className="mt-10 text-xl font-semibold">Fix findings</h2>
       <p className="mt-2 text-muted">
@@ -96,6 +108,7 @@ jobs:
       </p>
 
       <h2 className="mt-10 text-xl font-semibold">Runtime guards</h2>
+      <p className="mt-2 text-muted">The runtime library is not on npm yet; the API below is what it will ship with.</p>
       <Code>{`npm install @retrysafe/guard
 
 import { eventKey, prismaGuard } from "@retrysafe/guard";

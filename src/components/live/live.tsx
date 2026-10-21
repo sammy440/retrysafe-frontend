@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { CopyCommand } from "@/components/install-command";
 import { Results } from "@/components/playground/results";
 import type { AnalysisResult, SourceLocation } from "@/lib/api";
 
@@ -75,7 +76,7 @@ function Setup({ onConnect }: { onConnect: (port: string, token: string) => void
           <span className="grid size-7 shrink-0 place-items-center rounded-full bg-gradient-to-b from-[#4aa3ff] to-[#1f6fe5] text-sm font-medium text-white">1</span>
           <div className="min-w-0 flex-1">
             <p className="font-medium">In your project&apos;s terminal, run</p>
-            <pre className="mt-2 overflow-x-auto rounded-lg border border-border bg-code px-4 py-3 font-mono text-sm">npx retrysafe live --open</pre>
+            <CopyCommand command="npx retrysafe@latest live --open" className="mt-2 max-w-full overflow-x-auto" />
           </div>
         </li>
         <li className="flex gap-4">

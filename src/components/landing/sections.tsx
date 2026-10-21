@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CopyCommand, NPM_URL } from "@/components/install-command";
 import { Reveal } from "@/components/motion/reveal";
 import type { RuleDoc } from "@/lib/rules";
 import { Terminal } from "./terminal";
@@ -332,8 +333,11 @@ export function ClosingCta() {
             <Link href="/playground" className="rounded-full bg-white px-[30px] py-[13px] text-[16px] text-[#141a2b] shadow-[0_8px_24px_-8px_rgba(20,40,120,0.45)] transition-transform hover:-translate-y-px">
               Try the Playground
             </Link>
-            <code className="rounded-full border border-white/70 bg-white/55 px-5 py-[12px] font-mono text-[14px] text-[#0f1b3d] backdrop-blur-sm">npx retrysafe</code>
+            <CopyCommand command="npx retrysafe" tone="glass" />
           </div>
+          <a href={NPM_URL} className="mt-4 inline-block text-[13px] text-[#2a3a63] underline-offset-4 hover:underline">
+            or <span className="font-mono">npm install -D retrysafe</span> · view on npm ↗
+          </a>
         </Reveal>
       </div>
     </section>

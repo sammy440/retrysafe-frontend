@@ -1,0 +1,1 @@
+retrysafe: Ship webhooks that are safe to run twice. A Retry Safety Overview card shows effects analyzed, guarded, missing an idempotency key, and fixed.

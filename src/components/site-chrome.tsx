@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CopyCommand } from "./install-command";
 import { Logo } from "./logo";
 
 const NAV = [
@@ -33,7 +34,7 @@ export function SiteHeader() {
 
 const FOOTER = [
   { title: "Product", links: [["Playground", "/playground"], ["Live", "/live"], ["Rules", "/rules"], ["Docs", "/docs"]] },
-  { title: "Learn", links: [["Safe patterns", "/docs/patterns"], ["CLI reference", "/docs"], ["GitHub", "https://github.com/sammy440/retrysafe"]] },
+  { title: "Learn", links: [["Safe patterns", "/docs/patterns"], ["CLI reference", "/docs"], ["npm", "https://www.npmjs.com/package/retrysafe"], ["GitHub", "https://github.com/sammy440/retrysafe"]] },
 ] as const;
 
 export function SiteFooter() {
@@ -46,7 +47,7 @@ export function SiteFooter() {
             retrysafe
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-6 text-muted">Static analysis for webhook handlers and queue workers that run more than once.</p>
-          <code className="mt-4 inline-block rounded-lg border border-border bg-surface-2 px-3 py-1.5 font-mono text-[13px]">npx retrysafe</code>
+          <CopyCommand command="npx retrysafe" className="mt-4" />
         </div>
         {FOOTER.map((col) => (
           <div key={col.title}>
