@@ -39,7 +39,6 @@ function CopyIcon({ copied }: { copied: boolean }) {
   );
 }
 
-/** A single command with a copy button. `glass` sits on the landing page's sky backdrop. */
 export function CopyCommand({ command, tone = "plain", className = "" }: { command: string; tone?: "plain" | "glass"; className?: string }) {
   const [copied, copy] = useCopy();
   const styles =
@@ -64,7 +63,6 @@ export function CopyCommand({ command, tone = "plain", className = "" }: { comma
   );
 }
 
-/** Install instructions with a tab per package manager. */
 export function InstallTabs() {
   const [active, setActive] = useState<(typeof MANAGERS)[number]["id"]>("npx");
   const [copied, copy] = useCopy();

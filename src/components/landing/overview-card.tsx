@@ -17,10 +17,6 @@ const ROWS = [
 
 type Phase = "connecting" | "scanning" | "live";
 
-/**
- * The hero's "Retry Safety Overview": connects, scans service by service while the counts and bars
- * grow, then stays live with small updates as new effects are analyzed.
- */
 export function OverviewCard() {
   const [phase, setPhase] = useState<Phase>("connecting");
   const [scanned, setScanned] = useState(0);
@@ -37,7 +33,6 @@ export function OverviewCard() {
     }
     const timers: ReturnType<typeof setTimeout>[] = [];
     const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
-    // Scan one service at a time; counts arrive in uneven chunks, like real results.
     const shares = [0.18, 0.41, 0.63, 0.86, 1];
     at(900, () => setPhase("scanning"));
     shares.forEach((s, i) =>
@@ -50,7 +45,6 @@ export function OverviewCard() {
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // While live: a new batch every few seconds. Fixes move effects from "missing" to "fixed".
   useEffect(() => {
     if (phase !== "live" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const tick = setInterval(() => setUpdatedAgo((s) => s + 1), 1000);

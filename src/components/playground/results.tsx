@@ -33,7 +33,6 @@ function effectStatus(e: Effect, flagged: Finding[]): { mark: string; tone: stri
 
 export type EffectClass = "safe" | "flagged" | "unclear";
 
-/** Buckets an effect for the overview charts, using the same status the effect map shows. */
 export function classifyEffect(report: HandlerReport, e: Effect): EffectClass {
   const flagged = report.findings.filter((f) => f.effect && f.effect.order === e.order);
   if (flagged.length) return "flagged";
@@ -184,11 +183,8 @@ export function Results({
 }: {
   result: AnalysisResult;
   onSelect: (l: SourceLocation) => void;
-  /** Findings to mark as new (live mode). */
   newFindingIds?: Set<string>;
-  /** Show only handlers with findings. */
   hideClean?: boolean;
-  /** Fade the handler cards in one after another. */
   stagger?: boolean;
 }) {
   const attention = result.handlers.filter((h) => h.findings.length);

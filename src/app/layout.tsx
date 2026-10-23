@@ -9,7 +9,6 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://retrysafe-frontend
 const DESCRIPTION =
   "Static analysis for webhook handlers and queue workers that run more than once: find the double charges, double emails, and dropped events before a retry does.";
 
-// The share image itself comes from app/opengraph-image.jpg and app/twitter-image.jpg.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: "retrysafe", template: "%s · retrysafe" },
@@ -30,7 +29,6 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    // The inline script adds `js` before paint, so reveal animations start hidden only when they can run.
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />

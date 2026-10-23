@@ -9,7 +9,6 @@ import type { Marker } from "./editor";
 import { AnalysisOverview, type Run } from "./overview";
 import { Results } from "./results";
 
-// CodeMirror touches the DOM on import; load it only in the browser.
 const Editor = dynamic(() => import("./editor"), { ssr: false, loading: () => <div className="h-full animate-pulse bg-surface-2" /> });
 
 const CONFIDENCE: Confidence[] = ["high", "medium", "low"];
@@ -56,7 +55,6 @@ export function Playground() {
     }
   }, [files, minConfidence]);
 
-  // Analyze each example as it loads, so the page shows results right away.
   const [pendingRun, setPendingRun] = useState(true);
   useEffect(() => {
     if (!pendingRun) return;

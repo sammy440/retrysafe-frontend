@@ -2,10 +2,6 @@
 
 import { useEffect, useRef, type ElementType, type ReactNode } from "react";
 
-/**
- * Fades and lifts its content in the first time it scrolls into view. Before hydration (or without JS)
- * content is visible; the hidden starting state only applies once the `js` class is on <html>.
- */
 export function Reveal({
   as: Tag = "div",
   delay = 0,

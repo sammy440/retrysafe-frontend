@@ -2,15 +2,10 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-/**
- * Prints its lines one by one, like a command running, the first time it scrolls into view.
- * Command lines (starting with "$") type out character by character; output lines appear whole.
- */
 export function Terminal({ lines }: { lines: { prompt?: boolean; content: ReactNode; text?: string }[] }) {
   const ref = useRef<HTMLPreElement>(null);
-  const [shown, setShown] = useState(lines.length); // full output before hydration
+  const [shown, setShown] = useState(lines.length);
   const [typed, setTyped] = useState<number | undefined>(undefined);
-  // Hidden (with JS) until typing starts, so the server-rendered output does not flash and vanish.
   const [pending, setPending] = useState(true);
 
   useEffect(() => {

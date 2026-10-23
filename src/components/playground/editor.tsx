@@ -14,7 +14,6 @@ export interface Marker {
   message: string;
 }
 
-// Let the card's surface show through, so the editor sits flush in the playground's frame.
 const frame = Prec.highest(
   EditorView.theme({
     "&": { backgroundColor: "transparent" },
@@ -35,7 +34,6 @@ function useDarkMode(): boolean {
   return dark;
 }
 
-/** Code editor with retrysafe findings shown as diagnostics. `focusLine` scrolls to and selects a line. */
 export default function Editor({
   value,
   language,

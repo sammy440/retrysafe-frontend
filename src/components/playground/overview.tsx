@@ -22,7 +22,6 @@ const SEVERITIES = [
   { key: "info", label: "info", color: "#5aa7f7" },
 ] as const;
 
-/** True one frame after mount, so CSS transitions run from their empty state. */
 function useMounted(): boolean {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -44,7 +43,6 @@ function Tile({ title, aside, children }: { title: string; aside?: React.ReactNo
   );
 }
 
-/** Ring of findings by severity; segments sweep in and re-proportion between runs. */
 function SeverityDonut({ counts }: { counts: Record<(typeof SEVERITIES)[number]["key"], number> }) {
   const mounted = useMounted();
   const total = counts.error + counts.warning + counts.info;
@@ -104,7 +102,6 @@ function SeverityDonut({ counts }: { counts: Record<(typeof SEVERITIES)[number][
   );
 }
 
-/** One column per handler: its effects, with the unsafe ones stacked at the base. */
 function HandlerBars({ bars, runId }: { bars: { name: string; safe: number; flagged: number; unclear: number }[]; runId: number }) {
   const max = Math.max(1, ...bars.map((b) => b.safe + b.flagged + b.unclear));
   if (!bars.length) return <p className="text-xs text-muted">No handlers found.</p>;
@@ -135,7 +132,6 @@ function HandlerBars({ bars, runId }: { bars: { name: string; safe: number; flag
   );
 }
 
-/** Run time across this session's analyses; the line redraws after each run. */
 function RunSparkline({ history, runId }: { history: Run[]; runId: number }) {
   const w = 120;
   const h = 44;
@@ -171,10 +167,6 @@ function RunSparkline({ history, runId }: { history: Run[]; runId: number }) {
   );
 }
 
-/**
- * The playground's summary card, in the style of the landing page's Retry Safety Overview: a status
- * header, the effect breakdown, and three small charts that animate on every analysis.
- */
 export function AnalysisOverview({
   result,
   loading,

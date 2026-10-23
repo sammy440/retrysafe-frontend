@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 const RULE_IDS = new Set(RULES.map((r) => r.id));
 
 export default function PatternsPage() {
-  // Synced from the retrysafe repo by `pnpm sync-content`; read at build time. Rule names link to their pages.
   const markdown = readFileSync(path.join(process.cwd(), "content", "patterns.md"), "utf8").replace(/`([a-z0-9-]+)`/g, (m, id: string) =>
     RULE_IDS.has(id) ? `[\`${id}\`](/rules/${id})` : m,
   );

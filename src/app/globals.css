@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  /* White and sky blue, matching the hero. */
   --bg: #ffffff;
   --surface: #ffffff;
   --surface-2: #f3f7fd;
@@ -19,9 +18,7 @@
   --ok: #067647;
   --ok-soft: #ecfdf3;
   --code-bg: #f5f8fd;
-  /* Haze the hero fades through on its way into the page. */
   --hero-haze: 236 242 250;
-  /* Neutral chart fill and the playground's header wash. */
   --chart-muted: #cdd8ea;
   --play-hero: linear-gradient(160deg, #deebff 0%, #f2f7ff 52%, #ffffff 100%);
   --blob-opacity: 0.5;
@@ -84,7 +81,6 @@ body {
   color: var(--fg);
 }
 
-/* Long-form docs rendered from Markdown. */
 .prose-doc h1 { @apply mb-4 text-3xl font-semibold tracking-tight; }
 .prose-doc h2 { @apply mt-10 mb-3 text-xl font-semibold; }
 .prose-doc h3 { @apply mt-6 mb-2 font-semibold; }
@@ -101,13 +97,9 @@ body {
 .prose-doc th { @apply bg-surface-2 font-medium; }
 .prose-doc strong { @apply font-semibold; }
 
-/* ---------- Motion ---------- */
-
-/* Scroll reveal: hidden only once JS has marked <html>, so content never disappears without it. */
 .js [data-reveal] {
   opacity: 0;
   transform: translateY(18px);
-  /* Includes the hover-lift properties, since this rule overrides the card's own transition. */
   transition:
     opacity 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
     transform 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
@@ -122,14 +114,12 @@ body {
 
 .js [data-pending] { visibility: hidden; }
 
-/* Hero entrance. */
 @keyframes rise {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: none; }
 }
 .js .rise { animation: rise 900ms cubic-bezier(0.22, 1, 0.36, 1) var(--rise-delay, 0ms) backwards; }
 
-/* Loading shimmer for skeleton bars. */
 @keyframes shimmer {
   from { background-position: 200% 0; }
   to { background-position: -200% 0; }
@@ -140,7 +130,6 @@ body {
   animation: shimmer 1.4s linear infinite;
 }
 
-/* Delivery timelines: each segment grows in turn, holds, then fades and replays. */
 @keyframes lane {
   0%, 6% { transform: scaleX(0); opacity: 0; }
   16%, 82% { transform: scaleX(1); opacity: 1; }
@@ -156,14 +145,12 @@ html:not(.js) .lane-seg {
   animation-play-state: running;
 }
 
-/* Live indicator. */
 @keyframes live-ping {
   0% { transform: scale(1); opacity: 0.55; }
   80%, 100% { transform: scale(2.4); opacity: 0; }
 }
 .live-ping { animation: live-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
 
-/* A changed number flashes softly. */
 @keyframes flash {
   0% { background-color: rgba(37, 99, 235, 0.16); }
   100% { background-color: transparent; }
@@ -175,8 +162,6 @@ html:not(.js) .lane-seg {
 }
 .caret { animation: caret 1s steps(1) infinite; }
 
-/* ---------- Playground ---------- */
-
 .play-hero { background: var(--play-hero); }
 
 .sky-text {
@@ -186,7 +171,6 @@ html:not(.js) .lane-seg {
   color: transparent;
 }
 
-/* Soft clouds drifting behind the playground header. */
 @keyframes drift {
   0% { transform: translate(0, 0) scale(1); }
   50% { transform: translate(24px, 14px) scale(1.08); }
@@ -201,7 +185,6 @@ html:not(.js) .lane-seg {
   pointer-events: none;
 }
 
-/* Chart entrances: bars rise, segments sweep, lines draw. */
 @keyframes grow-y {
   from { transform: scaleY(0); }
   to { transform: scaleY(1); }
@@ -239,7 +222,6 @@ html:not(.js) .lane-seg {
 }
 .pop { animation: pop 450ms cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-/* Indeterminate progress under the overview header while analyzing. */
 @keyframes sweep {
   from { transform: translateX(-100%); }
   to { transform: translateX(250%); }
@@ -254,7 +236,6 @@ html:not(.js) .lane-seg {
   animation: sweep 1.1s ease-in-out infinite;
 }
 
-/* A soft beam passing over the editor while it is analyzed. */
 @keyframes scan {
   from { top: -30%; }
   to { top: 100%; }
@@ -268,7 +249,6 @@ html:not(.js) .lane-seg {
   animation: scan 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
-/* Light glinting across a busy button. */
 @keyframes shine {
   from { background-position: 150% 0, 0 0; }
   to { background-position: -50% 0, 0 0; }
@@ -287,6 +267,5 @@ html:not(.js) .lane-seg {
   .lane-seg { transform: none; opacity: 1; }
 }
 
-/* CodeMirror fills its container. */
 .cm-editor { height: 100%; font-size: 13px; }
 .cm-editor.cm-focused { outline: none; }

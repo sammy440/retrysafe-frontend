@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 export default function PlaygroundPage() {
   return (
     <main className="mx-auto max-w-[1400px] px-4 py-4 sm:px-6">
-      {/* The playground reads ?example= from the URL, which is only known in the browser. */}
       <Suspense fallback={<div className="h-[560px] animate-pulse rounded-xl border border-border bg-surface" />}>
         <Playground />
       </Suspense>

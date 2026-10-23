@@ -1,4 +1,3 @@
-/** Two stacked halves of a circle: the same handler, delivered twice. */
 export function Logo({ className = "size-8", color = "currentColor" }: { className?: string; color?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={className} aria-hidden>

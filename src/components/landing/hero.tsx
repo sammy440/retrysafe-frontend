@@ -16,7 +16,6 @@ export function Hero() {
   return (
     <section className="px-2.5 pt-2.5 sm:px-4 sm:pt-4 lg:px-5 lg:pt-5">
       <div className="relative isolate overflow-hidden rounded-t-[20px] sm:rounded-t-[26px]">
-        {/* Sky photo, deepened to indigo at the top and fading to cloud-white at the bottom. */}
         <Image src="/background.jpg" alt="" fill priority sizes="100vw" className="-z-20 scale-110 object-cover object-[50%_90%] blur-[5px]" />
         <div
           aria-hidden
@@ -24,7 +23,6 @@ export function Hero() {
           style={{
             background: [
               "linear-gradient(180deg, rgba(34,36,126,0.97) 0%, rgba(42,60,168,0.88) 14%, rgba(52,92,200,0.62) 30%, rgba(64,128,226,0.3) 46%, rgba(255,255,255,0) 60%)",
-              // Ends exactly on the page background, so the frame dissolves into the page below.
               "linear-gradient(0deg, var(--bg) 0%, var(--bg) 3%, color-mix(in srgb, var(--bg) 88%, transparent) 10%, rgb(var(--hero-haze) / 0.7) 20%, rgb(var(--hero-haze) / 0.3) 32%, rgb(var(--hero-haze) / 0) 46%)",
               "radial-gradient(38% 48% at 2% 66%, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.35) 45%, rgba(255,255,255,0) 75%)",
               "radial-gradient(36% 46% at 98% 64%, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.3) 45%, rgba(255,255,255,0) 75%)",
@@ -32,13 +30,11 @@ export function Hero() {
             ].join(","),
           }}
         />
-        {/* Cool the photo's cyan toward the reference's periwinkle mid-sky. */}
         <div
           aria-hidden
           className="absolute inset-0 -z-10 mix-blend-color"
           style={{ background: "linear-gradient(180deg, rgba(60,80,200,0) 20%, rgba(70,105,215,0.45) 42%, rgba(80,120,220,0.3) 62%, rgba(80,120,220,0) 80%)" }}
         />
-        {/* Faint scan lines across the deep blue, as in the reference. */}
         <div
           aria-hidden
           className="absolute inset-x-0 top-0 -z-10 h-[40%] opacity-[0.035] [mask-image:linear-gradient(180deg,black,transparent)]"
@@ -79,7 +75,6 @@ export function Hero() {
             Built for at-least-once delivery
           </p>
           <h1 className="rise mx-auto mt-[14px] [--rise-delay:90ms] text-[clamp(2.35rem,4.6vw,5.4rem)] leading-[0.95] font-medium tracking-[-0.055em] text-balance text-white">
-            {/* Two fixed lines from sm up, as in the design; one balanced sentence on phones. */}
             <span className="sm:block sm:whitespace-nowrap">Ship webhooks that are </span>
             <span className="sm:block sm:whitespace-nowrap">safe to run twice</span>
           </h1>

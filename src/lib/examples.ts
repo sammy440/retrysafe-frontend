@@ -1,4 +1,3 @@
-/** Playground starting points: small multi-file projects, each showing one failure (or the fix). */
 export interface Example {
   id: string;
   title: string;

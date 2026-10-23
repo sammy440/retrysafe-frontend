@@ -8,14 +8,12 @@ export interface RuleDoc {
   safePattern: string;
 }
 
-/** Rule docs, synced from the API by `pnpm sync-content`. */
 export const RULES = rules as RuleDoc[];
 
 export function getRule(id: string): RuleDoc | undefined {
   return RULES.find((r) => r.id === id);
 }
 
-/** Which playground example demonstrates a rule, when one does. */
 export const RULE_EXAMPLES: Record<string, string> = {
   "unguarded-side-effect": "stripe-unguarded",
   "record-before-effect-no-tx": "record-first",

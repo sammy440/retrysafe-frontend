@@ -5,10 +5,6 @@ import { useEffect, useRef, useState } from "react";
 const fmt = (n: number) => Math.round(n).toLocaleString("en-US");
 const easeOut = (t: number) => 1 - (1 - t) ** 3;
 
-/**
- * A number that tweens to its new value and flashes when it changes after the first load.
- * `initial` sets where the first tween starts (0 counts up on mount).
- */
 export function Ticker({ value, initial, duration = 900, flashOnChange }: { value: number; initial?: number; duration?: number; flashOnChange?: boolean }) {
   const [shown, setShown] = useState(initial ?? value);
   const [flash, setFlash] = useState(0);

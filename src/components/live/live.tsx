@@ -30,7 +30,6 @@ const EDITORS = [
 type EditorId = (typeof EDITORS)[number]["id"];
 
 function readParams(): { port: string; token: string } | undefined {
-  // The token lives in the URL fragment, which browsers never send to any server.
   const p = new URLSearchParams(window.location.hash.slice(1));
   const port = p.get("port");
   const token = p.get("token");
@@ -124,7 +123,6 @@ export function LivePanel() {
   const [error, setError] = useState<string>();
   const [newIds, setNewIds] = useState<Set<string>>(new Set());
   const [changes, setChanges] = useState<Change[]>([]);
-  // Starts at 0 and is set in an effect: reading the clock during prerender is not allowed.
   const [now, setNow] = useState(0);
   const [editor, setEditor] = useState<EditorId>("vscode");
   const [hideClean, setHideClean] = useState(true);
@@ -142,7 +140,6 @@ export function LivePanel() {
       const saved = localStorage.getItem("retrysafe.editor") as EditorId | null;
       if (saved && EDITORS.some((e) => e.id === saved)) setEditor(saved);
     } catch {
-      // storage unavailable
     }
     setNow(Date.now());
     const tick = setInterval(() => setNow(Date.now()), 1000);
@@ -200,7 +197,6 @@ export function LivePanel() {
       ws.onclose = () => {
         if (closed) return;
         setStatus("disconnected");
-        // Back off 1s, 2s, 4s… up to 15s; the CLI may simply be restarting.
         const delay = Math.min(15_000, 1000 * 2 ** attempt.current++);
         let left = Math.round(delay / 1000);
         setRetryIn(left);
@@ -225,7 +221,6 @@ export function LivePanel() {
   const onSelect = useCallback(
     async (loc: SourceLocation) => {
       if (!project) return;
-      // Editor URLs want forward slashes and a leading slash, also for Windows drives (/C:/…).
       const root = project.root.replace(/\\/g, "/").replace(/\/$/, "");
       const abs = `${root.startsWith("/") ? "" : "/"}${root}/${loc.file}`;
       const target = EDITORS.find((e) => e.id === editor)!;
@@ -297,7 +292,6 @@ export function LivePanel() {
               try {
                 localStorage.setItem("retrysafe.editor", e.target.value);
               } catch {
-                // storage unavailable
               }
             }}
             className="mt-1.5 w-full rounded-md border border-border bg-surface px-2 py-1.5"

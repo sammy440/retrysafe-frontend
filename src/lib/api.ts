@@ -1,5 +1,3 @@
-/** Client for the retrysafe API (retrysafe-backend/api). Types mirror @retrysafe/core's AnalysisResult. */
-
 export const API_URL = (process.env.NEXT_PUBLIC_RETRYSAFE_API_URL ?? "http://localhost:8787").replace(/\/$/, "");
 
 export interface SourceLocation {
@@ -54,7 +52,6 @@ export interface Finding {
   failingSequence: string[];
   fix: string;
   snippet?: string;
-  /** Lines around the finding (sent by `retrysafe live`). */
   excerpt?: { startLine: number; lines: string[] };
 }
 

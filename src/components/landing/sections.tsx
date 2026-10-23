@@ -7,7 +7,6 @@ import { Terminal } from "./terminal";
 
 const LIFT = "transition-[translate,box-shadow,border-color] duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_40px_-22px_rgba(30,60,150,0.35)]";
 
-/** Small mono label above section titles, the light-surface twin of the hero badge. */
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p className="inline-block rounded-[5px] border border-accent/25 bg-accent-soft px-[7px] py-[2px] font-mono text-[11.5px] tracking-[0.06em] text-accent uppercase">
@@ -25,8 +24,6 @@ function SectionTitle({ eyebrow, title, body, center }: { eyebrow: string; title
     </Reveal>
   );
 }
-
-/* ---------- 1. What every handler eventually sees ---------- */
 
 const DELIVERIES = [
   {
@@ -77,7 +74,6 @@ export function Deliveries() {
                   {lane.map((seg, j) => (
                     <span
                       key={j}
-                      // Segments play in order (lane by lane), hold, then the sequence replays.
                       style={{ width: `${seg.w}%`, animationDelay: `${(i * 2 + j) * 0.45 + n * 0.3}s` }}
                       className={`flex items-center truncate rounded-md px-2 font-mono text-[11px] ${seg.tone ? `lane-seg ${seg.tone} ${seg.tone.includes("text-") ? "" : "text-white"}` : ""}`}
                     >
@@ -95,8 +91,6 @@ export function Deliveries() {
     </section>
   );
 }
-
-/* ---------- 2. Two mistakes, one safe pattern ---------- */
 
 const PATTERNS = [
   {
@@ -161,8 +155,6 @@ export function Patterns() {
   );
 }
 
-/* ---------- 3. How it works ---------- */
-
 const STEPS = [
   { title: "Finds the handlers", body: "Webhook routes in Express, Fastify, and Next.js; BullMQ, SQS, and Lambda consumers; Probot apps. No list to maintain." },
   { title: "Maps every effect", body: "Follows calls through your own code to payments, emails, writes, queue publishes, and API calls, and knows which are idempotent." },
@@ -213,7 +205,6 @@ export function HowItWorks() {
             ))}
           </ol>
         </div>
-        {/* Terminal in the hero's indigo-to-blue sky. */}
         <Reveal delay={150} className="overflow-hidden rounded-2xl bg-[linear-gradient(180deg,#222680_0%,#2c48b4_55%,#3b6fd8_100%)] p-[1px] shadow-[0_30px_60px_-30px_rgba(30,50,140,0.6)]">
           <div className="rounded-[15px] bg-[linear-gradient(180deg,rgba(18,22,80,0.55),rgba(20,40,120,0.35))] p-5">
             <div className="mb-4 flex gap-1.5">
@@ -228,8 +219,6 @@ export function HowItWorks() {
     </section>
   );
 }
-
-/* ---------- 4. Rules ---------- */
 
 const DOT = { error: "bg-[#e5484d]", warning: "bg-[#f5a524]", info: "bg-[#5aa7f7]" } as const;
 
@@ -265,8 +254,6 @@ export function Rules({ rules }: { rules: RuleDoc[] }) {
     </section>
   );
 }
-
-/* ---------- 5. What ships ---------- */
 
 const TOOLS = [
   {
@@ -307,8 +294,6 @@ export function Tools() {
     </section>
   );
 }
-
-/* ---------- 6. Closing banner, back in the sky ---------- */
 
 export function ClosingCta() {
   return (

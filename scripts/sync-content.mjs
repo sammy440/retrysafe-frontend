@@ -1,5 +1,3 @@
-// Pull rule docs from the retrysafe API and the safe-patterns guide from the retrysafe repo into content/.
-// Usage: RETRYSAFE_API_URL=http://localhost:8787 RETRYSAFE_REPO=../retrySafe pnpm sync-content
 import { copyFileSync, existsSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
